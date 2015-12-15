@@ -13,5 +13,6 @@
     </head>
     <body>
         <li><a href="MainController?action=list">View all Magic Supplies</a></li>
+        <li><a href="ManController?action=list">View all Manufactures</a></li>
     </body>
 </html>

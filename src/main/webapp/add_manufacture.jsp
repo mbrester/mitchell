@@ -54,45 +54,30 @@
             <div class="box">
                 <div class="col-lg-12">
 
-                    <form onsubmit="return validateForm()" name="form"  method="POST" action="MainController?action=test">
+                    <form onsubmit="return validateForm()" name="form"  method="POST" action="ManController?action=test">
                         <p>
                         <table >
 
                             <tr>
                                 <td >ID</td>
-                                <td align="left"><input type="text" value="" name="productId" readonly/></td>
+                                <td align="left"><input type="text" value="" name="manufactureId" readonly/></td>
                             </tr>         
 
 
                             <tr>
                                 <td  align="left">Name:</td>
-                                <td align="left"><input type="text" value="" name="productName" /></td>
+                                <td align="left"><input type="text" value="" name="manufactureName" /></td>
                             </tr>
                             <tr>
                                 <td  align="left">Description:</td>
-                                <td align="left"><input type="text" value="" name="productDescription" /></td>
+                                <td align="left"><input type="text" value="" name="manufactureCity" /></td>
                             </tr>
-                            <tr>
-                                <td  align="left">Price</td>
-                                <td align="left"><input type="text" value="" name="productPrice" /></td>
-                            </tr>
-                            <tr>
-                                <td  align="left">Image Url:</td>
-                                <td align="left"><input type="text" value="" name="productImageUrl" /></td>
-                            </tr>
-
-                            <select name="manufactureId">
-                                <c:forEach var="a" items="${manufactures}">
-
-                                    <option value="${a.manufactureId}" >${a.Name}</option>
-
-                                </c:forEach>
-                            </select>
+                          
 
                             <tr>
                         </table>  <br>
 
-                        <input type="submit" value="Add Supply" name="action" /> <a href="MainController?action=list">Back to List of Supplies</a>
+                        <input type="submit" value="Add Manufacture" name="action" /> <a href="ManController?action=list">Back to List of Supplies</a>
 
 
 

@@ -5,33 +5,37 @@
  */
 package edu.wctc.mjb.mitchellsmagicsupliesadminservice.controller;
 
-import edu.wctc.mjb.mitchellsmagicsupliesadminservice.model.DbStrategy;
-import edu.wctc.mjb.mitchellsmagicsupliesadminservice.model.MagicSupliesDaoStrategy;
-import edu.wctc.mjb.mitchellsmagicsupliesadminservice.model.MagicSuply;
-import edu.wctc.mjb.mitchellsmagicsupliesadminservice.model.MagicSuplyService;
-import edu.wctc.mjb.mitchellsmagicsupliesadminservice.model.MySqlDbStrategy;
+
+import edu.wctc.mjb.mitchellsmagicsupliesadminservice.entity.MagicSuply;
+import edu.wctc.mjb.mitchellsmagicsupliesadminservice.entity.Manufacture;
+import edu.wctc.mjb.mitchellsmagicsupliesadminservice.service.MagicSuplyService;
+import edu.wctc.mjb.mitchellsmagicsupliesadminservice.service.ManufactureService;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Constructor;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.inject.Inject;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 /**
  *
  * @author Brester
  */
 @WebServlet(name = "MainController", urlPatterns = {"/MainController"})
-public class MainController extends HttpServlet {
+public class MagicSuplyController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -60,16 +64,24 @@ public class MainController extends HttpServlet {
     private final static String ADD_PAGE = "/add.jsp";
     private String destination;
     private final static String EDIT_PAGE = "/edit.jsp";
+    private MagicSuply suply;
+    
+     
       
             
     protected final void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
          action = request.getParameter(PARAM_ACTION);
         destination = LIST_PAGE;
-        
+               
         try {
-            //Tried to use dependincy injection, somthing is wrong and it wont work, will look into fixing later
-           MagicSuplyService magicService = new MagicSuplyService(new MagicSupliesDaoStrategy(new MySqlDbStrategy(),driverClass, url, userName, password));
-           
+               ServletContext sctx = getServletContext();
+        WebApplicationContext ctx
+                = WebApplicationContextUtils.getWebApplicationContext(sctx);
+        MagicSuplyService magicService = (MagicSuplyService) ctx.getBean("MagicSuplyService");
+
+        ManufactureService manService = (ManufactureService) ctx.getBean("ManufactureService");
+
+       
          
          
          switch(action){
@@ -78,7 +90,12 @@ public class MainController extends HttpServlet {
                  destination = LIST_PAGE;
                     break;
              case ACTION_UPDATE:
-                 magicService.updateRecord(request.getParameter("productName"), Integer.parseInt(request.getParameter("productId")),request.getParameter("productDescription"),Double.parseDouble(request.getParameter("productPrice")),request.getParameter("productImageUrl"));
+                 suply = magicService.findById(request.getParameter("productId"));
+                 suply.setProductDescription(request.getParameter("productDescription"));
+                 suply.setProductName(request.getParameter("productName"));
+                 suply.setProductPrice(Double.parseDouble(request.getParameter("productPrice")));
+                 suply.setProductImageUrl(request.getParameter("productImageUrl"));
+                 magicService.edit(suply);
                     this.getListOfMagicSuplies(request, magicService);
                  destination = LIST_PAGE;
                          break;
@@ -86,7 +103,7 @@ public class MainController extends HttpServlet {
                  
                  String magicSuplyId = request.getParameter("productId");
                    MagicSuply mS = null;
-                          mS = magicService.getSuplyById(magicSuplyId);
+                          mS = magicService.findById(magicSuplyId);
                     request.setAttribute("suply", mS);
                     destination = EDIT_PAGE;
                     break;
@@ -94,17 +111,19 @@ public class MainController extends HttpServlet {
                     destination = ADD_PAGE;
                     break;
                 case "test":
-                    String name = request.getParameter("productName");
-                    String description = request.getParameter("productDescription");
-                    double price = Double.parseDouble(request.getParameter("productPrice"));
-                   String image = request.getParameter("productImageUrl");
-                    magicService.createNewMagicSuply(name,description,price,image);
+                    suply = new MagicSuply();
+                    suply.setProductName(request.getParameter("productName"));
+                    suply.setProductDescription(request.getParameter("productDescription"));
+                    suply.setProductPrice(Double.parseDouble(request.getParameter("productPrice")));
+                   suply.setProductImageUrl(request.getParameter("productImageUrl"));
+                    magicService.create(suply);
                     this.getListOfMagicSuplies(request, magicService);
                     destination = LIST_PAGE;
                      break;
                     
                 case ACTION_DELETE:
-                    magicService.deleteRecordByID(Integer.parseInt(request.getParameter("productId")));
+                    suply = magicService.findById(request.getParameter("productId"));
+                    magicService.remove(suply);
                     this.getListOfMagicSuplies(request, magicService);
                     destination = LIST_PAGE;
                     break;
@@ -119,38 +138,6 @@ public class MainController extends HttpServlet {
         dispatcher.forward(request, response);
     }
     
-    /*
-    Not currnetly used due to it not working, not sure why but disabled for the time being.
-    */
- private  MagicSuplyService doInjectionDependency() throws Exception {
-
-        Class dbClass = Class.forName(dbStrategyClassName);
-        DbStrategy db = (DbStrategy) dbClass.newInstance();
-
-        
-        MagicSupliesDaoStrategy magicDao = null;
-        Class daoClass = Class.forName(daoClassName);
-        Constructor constructor = null;
-        try{
-        constructor = daoClass.getConstructor(new Class[]{
-            DbStrategy.class, String.class, String.class, String.class, String.class
-        });
-        }catch(NoSuchMethodException e){
-            System.out.println("test");
-        }
-        if (constructor != null) {
-            Object[] constructorArgs = new Object[]{
-                db, driverClass, url, userName, password
-            };
-            
-            magicDao = (MagicSupliesDaoStrategy) constructor
-                    .newInstance(constructorArgs);
-
-        } else{
-            //not in use as of yet;
-        }
-        return new MagicSuplyService(magicDao);
-    }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -191,8 +178,13 @@ public class MainController extends HttpServlet {
     }// </editor-fold>
 
     private  void getListOfMagicSuplies(HttpServletRequest request, MagicSuplyService magicService) throws Exception {
-        List<MagicSuply> suplies = magicService.getAllSuplies();
+        List<MagicSuply> suplies = magicService.findAll();
         request.setAttribute("suplies", suplies);
+        
+    }
+        private  void getListOfManufacturers(HttpServletRequest request, ManufactureService manService) throws Exception {
+        List<Manufacture> manufactures = manService.findAll();
+        request.setAttribute("manufactures", manufactures);
         
     }
     @Override

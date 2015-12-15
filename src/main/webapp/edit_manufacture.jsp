@@ -10,13 +10,12 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link href="bootstrap.css" rel="stylesheet" type="text/css"/>
-
-        <!-- Latest compiled and minified JavaScript -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
+        <style>
+            body{
+                background-color: lightgrey;
+            }  
+        </style>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-
-        <title>New Magic Supply</title>
         <script>
             function validateForm() {
                 var price = document.forms["form"]["productPrice"].value;
@@ -41,62 +40,45 @@
                 }
             }
         </script>
-        <style>
-            body{
-                background-color: lightgrey;
-            }  
-        </style>
 
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <title>Supply List</title>
     </head>
     <body>
-        <h1>New Magic Supply</h1>
+        <h1>Supply List</h1>
         <div class="row">
             <div class="box">
                 <div class="col-lg-12">
-
-                    <form onsubmit="return validateForm()" name="form"  method="POST" action="MainController?action=test">
-                        <p>
+                    <form onsubmit="return validateForm()" name="form" method="POST" action="MainController?action=update">
                         <table >
 
+
                             <tr>
-                                <td >ID</td>
-                                <td align="left"><input type="text" value="" name="productId" readonly/></td>
+                                <td style="" align="left">ID </td>
+                                <td align="left"><input type="text" value="${suply.manufactureId}" name="manufactureId" readonly/></td>
                             </tr>         
 
 
+
                             <tr>
-                                <td  align="left">Name:</td>
-                                <td align="left"><input type="text" value="" name="productName" /></td>
+                                <td style="" align="left">Name </td>
+                                <td align="left"><input type="text" value="${suply.manufactureName}" name="manufactureName" /></td>
                             </tr>
                             <tr>
-                                <td  align="left">Description:</td>
-                                <td align="left"><input type="text" value="" name="productDescription" /></td>
+                                <td style="" align="left">City: </td>
+                                <td align="left"><input type="text" value="${suply.manufactureCity}" name="manufactureCity" /></td>
                             </tr>
-                            <tr>
-                                <td  align="left">Price</td>
-                                <td align="left"><input type="text" value="" name="productPrice" /></td>
-                            </tr>
-                            <tr>
-                                <td  align="left">Image Url:</td>
-                                <td align="left"><input type="text" value="" name="productImageUrl" /></td>
-                            </tr>
+                            
 
-                            <select name="manufactureId">
-                                <c:forEach var="a" items="${manufactures}">
-
-                                    <option value="${a.manufactureId}" >${a.Name}</option>
-
-                                </c:forEach>
-                            </select>
-
-                            <tr>
-                        </table>  <br>
-
-                        <input type="submit" value="Add Supply" name="action" /> <a href="MainController?action=list">Back to List of Supplies</a>
+                        </table>        
 
 
 
-                        </p>
+                        <input type="submit" value="Update" name="action" /> <a href="MainController?action=list">Back to List of Supplies</a>
+
+
                     </form>
                 </div>
             </div>

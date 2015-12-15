@@ -78,6 +78,16 @@
                                 <td style="" align="left">Name</td>
                                 <td align="left"><input type="text" value="${suply.productImageUrl}" name="productImageUrl" /></td>
                             </tr>
+                            <select name="manufactureId">
+                                                <c:forEach var="a" items="${manufactures}">
+                        <c:if test="${suply.manufactureId == a}">
+                            <option value="${a.manufactureId}" selected="true">${a.Name}</option>
+                        </c:if>
+                           <c:if test="${suply.manufactureId != a}">
+                            <option value="${a.manufactureId}" >${a.Name}</option>
+                        </c:if>
+                            </c:forEach>
+                            </select>
 
                         </table>        
 

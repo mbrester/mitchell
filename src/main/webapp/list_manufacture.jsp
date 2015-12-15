@@ -30,14 +30,11 @@
         <table border="1">
             <tr>
                 <th align="left" class="tableHead">ID</th>
-                <th align="left" class="tableHead">Magic Supply Name</th>
-                <th align="left" class="tableHead">Magic Supply Price</th>
-                <th align="left" class="tableHead">Magic Supply Description</th>
-                <th align="right" class="tableHead">Product Image URL</th>
-                <th align="right" class="tableHead">Manufacturer</th> 
+                <th align="left" class="tableHead">Manufacture Name</th>
+                <th align="left" class="tableHead">Manufacture City</th>
                 <th align="right" class="tableHead"></th>
             </tr>
-        <c:forEach var="s" items="${suplies}" varStatus="rowCount">
+        <c:forEach var="s" items="${manufactures}" varStatus="rowCount">
             <c:choose>
                 <c:when test="${rowCount.count % 2 == 0}">
                     <tr style="background-color: white;">
@@ -46,21 +43,16 @@
                     <tr style="background-color: cyan;">
                 </c:otherwise>
             </c:choose>
-            <td align="left">${s.productId}</td>
-            <td align="left">${s.productName}</td>
-            <td align="left">${s.productPrice}</td>
-            <td align="left">${s.productDescription}</td>
-            <td align="right">
-               ${s.productImageUrl}
-            </td>
-             <td align="left">${s.manufacuterId.name}</td>
-            
-            <td align ="right"> <a href="MainController?action=edit&productId=${s.productId}"> edit </a> <a href="MainController?action=delete&productId=${s.productId}"> delete </a> 
+            <td align="left">${s.manufactureId}</td>
+            <td align="left">${s.name}</td>
+            <td align="left">${s.city}</td>
+
+            <td align ="right"> <a href="ManController?action=edit&manufactureId=${s.manufactureId}"> edit </a> <a href="ManController?action=delete&manufactureId=${s.manufactureId}"> delete </a> 
         </tr>
         </c:forEach>
         </table>
         <br>
-        <form method="POST" action="MainController?action=add">
+        <form method="POST" action="ManController?action=add">
             <input type="submit" value="add"/>
         </form>
         
