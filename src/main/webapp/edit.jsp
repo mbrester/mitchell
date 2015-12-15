@@ -4,6 +4,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <!DOCTYPE html>
 <html>
@@ -52,7 +53,7 @@
             <div class="box">
                 <div class="col-lg-12">
                     <form onsubmit="return validateForm()" name="form" method="POST" action="MainController?action=update">
-                        <table >
+                        <table class="table-bordered table-hover table" >
 
 
                             <tr>
@@ -78,17 +79,21 @@
                                 <td style="" align="left">Name</td>
                                 <td align="left"><input type="text" value="${suply.productImageUrl}" name="productImageUrl" /></td>
                             </tr>
+                            <tr>
+                                <td style="" align="left"> Manufacturer Name</td>
+                                <td align="left">
                             <select name="manufactureId">
                                                 <c:forEach var="a" items="${manufactures}">
-                        <c:if test="${suply.manufactureId == a}">
-                            <option value="${a.manufactureId}" selected="true">${a.Name}</option>
+                        <c:if test="${suply.manufatureId == a}">
+                            <option value="${a.manufactureId}" selected="true">${a.name}</option>
                         </c:if>
-                           <c:if test="${suply.manufactureId != a}">
-                            <option value="${a.manufactureId}" >${a.Name}</option>
+                           <c:if test="${suply.manufatureId != a}">
+                            <option value="${a.manufactureId}" >${a.name}</option>
                         </c:if>
                             </c:forEach>
                             </select>
-
+                                </td>
+                            </tr>
                         </table>        
 
 

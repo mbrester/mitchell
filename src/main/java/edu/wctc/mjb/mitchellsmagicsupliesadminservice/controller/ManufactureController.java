@@ -8,8 +8,8 @@ package edu.wctc.mjb.mitchellsmagicsupliesadminservice.controller;
 
 import edu.wctc.mjb.mitchellsmagicsupliesadminservice.entity.MagicSuply;
 import edu.wctc.mjb.mitchellsmagicsupliesadminservice.entity.Manufacture;
-import edu.wctc.mjb.mitchellsmagicsupliesadminservice.service.MagicSuplyService;
-import edu.wctc.mjb.mitchellsmagicsupliesadminservice.service.ManufactureService;
+import edu.wctc.mjb.mitchellsmagicsupliesadminservice.service.MagicSuplyFacade;
+import edu.wctc.mjb.mitchellsmagicsupliesadminservice.service.ManufactureFacade;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Constructor;
@@ -57,10 +57,13 @@ public class ManufactureController extends HttpServlet {
     private final static String LIST_PAGE = "/list_manufacture.jsp";
     private final static String ADD_PAGE = "/add_manufacture.jsp";
     private String destination;
-    private final static String EDIT_PAGE = "/edit_manufature.jsp";
+    private final static String EDIT_PAGE = "/edit_manufacture.jsp";
     private Manufacture manufacture;
     
-     
+     @Inject
+     private MagicSuplyFacade magicService;
+     @Inject 
+     private ManufactureFacade manService;    
 
       
             
@@ -69,12 +72,7 @@ public class ManufactureController extends HttpServlet {
         destination = LIST_PAGE;
                
         try {
-            ServletContext sctx = getServletContext();
-        WebApplicationContext ctx
-                = WebApplicationContextUtils.getWebApplicationContext(sctx);
-        MagicSuplyService magicService = (MagicSuplyService) ctx.getBean("MagicSuplyService");
 
-        ManufactureService manService = (ManufactureService) ctx.getBean("ManufactureService");
                  String manufactureId = request.getParameter("manufactureId");    
          
          
@@ -84,9 +82,9 @@ public class ManufactureController extends HttpServlet {
                  destination = LIST_PAGE;
                     break;
              case ACTION_UPDATE:
-                 manufacture = manService.findById(manufactureId);
+                 manufacture = manService.find(Integer.parseInt(manufactureId));
                  manufacture.setName(request.getParameter("manufactureName"));
-                 manufacture.setCity(request.getParameter("manufacuteCity"));
+                 manufacture.setCity(request.getParameter("manufactureCity"));
                  manService.edit(manufacture);
                     this.getListOfManufacturers(request, manService);
                  destination = LIST_PAGE;
@@ -95,7 +93,7 @@ public class ManufactureController extends HttpServlet {
                  
                  
                   
-                          manufacture = manService.findById(manufactureId);
+                          manufacture = manService.find(Integer.parseInt(manufactureId));
                     request.setAttribute("suply", manufacture);
                     destination = EDIT_PAGE;
                     break;
@@ -105,14 +103,14 @@ public class ManufactureController extends HttpServlet {
                 case "test":
                     manufacture = new Manufacture();
                  manufacture.setName(request.getParameter("manufactureName"));
-                 manufacture.setCity(request.getParameter("manufacuteCity"));
+                 manufacture.setCity(request.getParameter("manufactureCity"));
                     manService.create(manufacture);
                     this.getListOfManufacturers(request, manService);
                     destination = LIST_PAGE;
                      break;
                     
                 case ACTION_DELETE:
-                    manufacture = manService.findById(manufactureId);
+                    manufacture = manService.find(Integer.parseInt(manufactureId));
                     manService.remove(manufacture);
                     this.getListOfManufacturers(request, manService);
                     destination = LIST_PAGE;
@@ -167,7 +165,7 @@ public class ManufactureController extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private  void getListOfManufacturers(HttpServletRequest request, ManufactureService manService) throws Exception {
+    private  void getListOfManufacturers(HttpServletRequest request, ManufactureFacade manService) throws Exception {
         List<Manufacture> manufactures = manService.findAll();
         request.setAttribute("manufactures", manufactures);
         

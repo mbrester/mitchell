@@ -4,6 +4,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <!DOCTYPE html>
 <html>
@@ -51,8 +52,8 @@
         <div class="row">
             <div class="box">
                 <div class="col-lg-12">
-                    <form onsubmit="return validateForm()" name="form" method="POST" action="MainController?action=update">
-                        <table >
+                    <form onsubmit="return validateForm()" name="form" method="POST" action="ManController?action=update">
+                        <table  class="table-bordered table-hover table">
 
 
                             <tr>
@@ -64,11 +65,11 @@
 
                             <tr>
                                 <td style="" align="left">Name </td>
-                                <td align="left"><input type="text" value="${suply.manufactureName}" name="manufactureName" /></td>
+                                <td align="left"><input type="text" value="${suply.name}" name="manufactureName" /></td>
                             </tr>
                             <tr>
                                 <td style="" align="left">City: </td>
-                                <td align="left"><input type="text" value="${suply.manufactureCity}" name="manufactureCity" /></td>
+                                <td align="left"><input type="text" value="${suply.city}" name="manufactureCity" /></td>
                             </tr>
                             
 
@@ -76,7 +77,7 @@
 
 
 
-                        <input type="submit" value="Update" name="action" /> <a href="MainController?action=list">Back to List of Supplies</a>
+                        <input type="submit" value="update" name="action" /> <a href="ManController?action=list">Back to List of Supplies</a>
 
 
                     </form>

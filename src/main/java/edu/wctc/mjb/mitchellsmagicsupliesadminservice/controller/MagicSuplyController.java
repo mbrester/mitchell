@@ -8,8 +8,8 @@ package edu.wctc.mjb.mitchellsmagicsupliesadminservice.controller;
 
 import edu.wctc.mjb.mitchellsmagicsupliesadminservice.entity.MagicSuply;
 import edu.wctc.mjb.mitchellsmagicsupliesadminservice.entity.Manufacture;
-import edu.wctc.mjb.mitchellsmagicsupliesadminservice.service.MagicSuplyService;
-import edu.wctc.mjb.mitchellsmagicsupliesadminservice.service.ManufactureService;
+import edu.wctc.mjb.mitchellsmagicsupliesadminservice.service.MagicSuplyFacade;
+import edu.wctc.mjb.mitchellsmagicsupliesadminservice.service.ManufactureFacade;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Constructor;
@@ -66,7 +66,10 @@ public class MagicSuplyController extends HttpServlet {
     private final static String EDIT_PAGE = "/edit.jsp";
     private MagicSuply suply;
     
-     
+     @Inject
+     private MagicSuplyFacade magicService;
+     @Inject 
+     private ManufactureFacade manService;
       
             
     protected final void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
@@ -74,14 +77,9 @@ public class MagicSuplyController extends HttpServlet {
         destination = LIST_PAGE;
                
         try {
-               ServletContext sctx = getServletContext();
-        WebApplicationContext ctx
-                = WebApplicationContextUtils.getWebApplicationContext(sctx);
-        MagicSuplyService magicService = (MagicSuplyService) ctx.getBean("MagicSuplyService");
-
-        ManufactureService manService = (ManufactureService) ctx.getBean("ManufactureService");
-
-       
+               
+                 this.getListOfManufacturers(request, manService);
+                
          
          
          switch(action){
@@ -90,20 +88,21 @@ public class MagicSuplyController extends HttpServlet {
                  destination = LIST_PAGE;
                     break;
              case ACTION_UPDATE:
-                 suply = magicService.findById(request.getParameter("productId"));
+                 suply = magicService.find(Integer.parseInt(request.getParameter("productId")));
                  suply.setProductDescription(request.getParameter("productDescription"));
                  suply.setProductName(request.getParameter("productName"));
                  suply.setProductPrice(Double.parseDouble(request.getParameter("productPrice")));
                  suply.setProductImageUrl(request.getParameter("productImageUrl"));
+                 suply.setManufatureId(manService.find(Integer.parseInt(request.getParameter("manufactureId"))));
                  magicService.edit(suply);
                     this.getListOfMagicSuplies(request, magicService);
                  destination = LIST_PAGE;
                          break;
              case ACTION_EDIT:
                  
-                 String magicSuplyId = request.getParameter("productId");
+     
                    MagicSuply mS = null;
-                          mS = magicService.findById(magicSuplyId);
+                          mS = magicService.find(Integer.parseInt(request.getParameter("productId")));
                     request.setAttribute("suply", mS);
                     destination = EDIT_PAGE;
                     break;
@@ -115,14 +114,15 @@ public class MagicSuplyController extends HttpServlet {
                     suply.setProductName(request.getParameter("productName"));
                     suply.setProductDescription(request.getParameter("productDescription"));
                     suply.setProductPrice(Double.parseDouble(request.getParameter("productPrice")));
-                   suply.setProductImageUrl(request.getParameter("productImageUrl"));
+                    suply.setProductImageUrl(request.getParameter("productImageUrl"));
+                    suply.setManufatureId(manService.find(Integer.parseInt(request.getParameter("manufactureId"))));
                     magicService.create(suply);
                     this.getListOfMagicSuplies(request, magicService);
                     destination = LIST_PAGE;
                      break;
                     
                 case ACTION_DELETE:
-                    suply = magicService.findById(request.getParameter("productId"));
+                    suply = magicService.find(Integer.parseInt(request.getParameter("productId")));
                     magicService.remove(suply);
                     this.getListOfMagicSuplies(request, magicService);
                     destination = LIST_PAGE;
@@ -130,6 +130,7 @@ public class MagicSuplyController extends HttpServlet {
          }
         } catch (Exception ex) {
            request.setAttribute("err", ex);
+            System.out.println(ex);
         }
          
          
@@ -177,12 +178,12 @@ public class MagicSuplyController extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private  void getListOfMagicSuplies(HttpServletRequest request, MagicSuplyService magicService) throws Exception {
+    private  void getListOfMagicSuplies(HttpServletRequest request, MagicSuplyFacade magicService) throws Exception {
         List<MagicSuply> suplies = magicService.findAll();
         request.setAttribute("suplies", suplies);
         
     }
-        private  void getListOfManufacturers(HttpServletRequest request, ManufactureService manService) throws Exception {
+        private  void getListOfManufacturers(HttpServletRequest request, ManufactureFacade manService) throws Exception {
         List<Manufacture> manufactures = manService.findAll();
         request.setAttribute("manufactures", manufactures);
         

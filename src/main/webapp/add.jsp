@@ -4,6 +4,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <!DOCTYPE html>
 <html>
@@ -56,7 +57,7 @@
 
                     <form onsubmit="return validateForm()" name="form"  method="POST" action="MainController?action=test">
                         <p>
-                        <table >
+                        <table   class="table-bordered table-hover table">
 
                             <tr>
                                 <td >ID</td>
@@ -80,15 +81,19 @@
                                 <td  align="left">Image Url:</td>
                                 <td align="left"><input type="text" value="" name="productImageUrl" /></td>
                             </tr>
-
+                            <tr>
+                                <td  align="left">Manufacture:</td>
+                                <td align="left">
                             <select name="manufactureId">
                                 <c:forEach var="a" items="${manufactures}">
 
-                                    <option value="${a.manufactureId}" >${a.Name}</option>
+                                    <option value="${a.manufactureId}" >${a.name}</option>
 
                                 </c:forEach>
                             </select>
-
+                                </td>
+                            
+                        </tr>
                             <tr>
                         </table>  <br>
 

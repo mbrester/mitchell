@@ -8,6 +8,7 @@ package edu.wctc.mjb.mitchellsmagicsupliesadminservice.entity;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -46,7 +47,7 @@ public class Manufacture implements Serializable {
     @Size(max = 45)
     @Column(name = "city")
     private String city;
-    @OneToMany(mappedBy = "manufatureId")
+    @OneToMany(mappedBy = "manufatureId", cascade= CascadeType.ALL)
     private Collection<MagicSuply> magicSuplyCollection;
 
     public Manufacture() {
