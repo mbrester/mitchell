@@ -16,7 +16,7 @@
         <title>Magic Supply Admin tool</title>
         <style>
             body{
-                background-color: lightgrey;
+                background-color: ${applicationScope['color']};
             }  
             </style>
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
@@ -52,7 +52,7 @@
             <td align="left">${s.productPrice}</td>
             <td align="left">${s.productDescription}</td>
             <td align="right">
-               ${s.productImageUrl}
+                <img src="${s.productImageUrl}" width="120px"/>
             </td>
              <td align="left">${s.manufatureId.name}</td>
             
@@ -63,8 +63,23 @@
         <br>
         <form method="POST" action="MainController?action=add">
             <input type="submit" value="add"/>
+            <br/>
+            
         </form>
-        
+        <form method="POST" action="MainController?action=list">
+            <p>Change the background color<select name="color">
+                <option value="red">red</option>
+                <option value="blue">blue</option>
+                <option value="green">green</option>
+                <option value="gray">gray</option>
+                
+            </select><input type="submit"/></p>
+            
+            
+        </form>
+                    Logged in as: <sec:authentication property="principal.username"></sec:authentication> ::
+            <a href='<%= this.getServletContext().getContextPath() + "/j_spring_security_logout"%>'>Log Me Out</a>
+            <a href="/AdminService/">Go Back to Main Page</a>
             
         <c:if test="${errMsg != null}">
             <p style="font-weight: bold;color: red;">Sorry, data was unable to be retrieved:<br>

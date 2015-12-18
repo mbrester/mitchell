@@ -47,7 +47,7 @@ public class Manufacture implements Serializable {
     @Size(max = 45)
     @Column(name = "city")
     private String city;
-    @OneToMany(mappedBy = "manufatureId", cascade= CascadeType.ALL)
+    @OneToMany(mappedBy = "manufatureId", cascade= CascadeType.REMOVE)
     private Collection<MagicSuply> magicSuplyCollection;
 
     public Manufacture() {

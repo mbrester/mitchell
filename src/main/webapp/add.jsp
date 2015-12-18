@@ -44,8 +44,8 @@
         </script>
         <style>
             body{
-                background-color: lightgrey;
-            }  
+                background-color: ${applicationScope['color']};
+            }   
         </style>
 
     </head>
@@ -103,6 +103,9 @@
 
                         </p>
                     </form>
+                                Logged in as: <sec:authentication property="principal.username"></sec:authentication> ::
+            <a href='<%= this.getServletContext().getContextPath() + "/j_spring_security_logout"%>'>Log Me Out</a>
+         
                 </div>
             </div>
         </div>

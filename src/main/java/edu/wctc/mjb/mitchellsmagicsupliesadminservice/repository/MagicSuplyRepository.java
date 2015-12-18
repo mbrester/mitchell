@@ -16,6 +16,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface MagicSuplyRepository extends JpaRepository<MagicSuply, Integer>, Serializable{
 
-    public MagicSuply saveAndFlush(Manufacture man);
+    public MagicSuply saveAndFlush(MagicSuply man);
     
 }

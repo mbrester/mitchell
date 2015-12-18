@@ -17,38 +17,30 @@
             }  
         </style>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-        <script>
+       <script>
             function validateForm() {
-                var price = document.forms["form"]["productPrice"].value;
-                if (price <= 0 || price === "") {
-                    alert("Price must be filled out and larger than 0");
-                    return false;
-                }
-                var name = document.forms["form"]["productName"].value;
+               
+                var name = document.forms["form"]["manufactureName"].value;
                 if (name === "") {
-                    alert("Product Name Must be filled in.")
+                    alert("Manufacture Name Must be filled in.");
                     return false;
                 }
-                var description = document.forms["form"]["productDescription"].value;
+                var description = document.forms["form"]["manufactureCity"].value;
                 if (description === "") {
-                    alert("Product description Must be filled in.")
+                    alert("Manufacture City Must be filled in.");
                     return false;
                 }
-                var imageUrl = document.forms["form"]["productImageUrl"].value;
-                if (imageUrl === "") {
-                    alert("Product Image Url Must be filled in.")
-                    return false;
-                }
+                
             }
         </script>
 
 
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-        <title>Supply List</title>
+        <title>Edit Manufacture</title>
     </head>
     <body>
-        <h1>Supply List</h1>
+        <h1>Edit Manufacture</h1>
         <div class="row">
             <div class="box">
                 <div class="col-lg-12">
@@ -81,6 +73,9 @@
 
 
                     </form>
+                                        Logged in as: <sec:authentication property="principal.username"></sec:authentication> ::
+            <a href='<%= this.getServletContext().getContextPath() + "/j_spring_security_logout"%>'>Log Me Out</a>
+         
                 </div>
             </div>
         </div>

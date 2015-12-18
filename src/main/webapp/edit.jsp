@@ -13,8 +13,8 @@
         <link href="bootstrap.css" rel="stylesheet" type="text/css"/>
         <style>
             body{
-                background-color: lightgrey;
-            }  
+                background-color: ${applicationScope['color']};
+            } 
         </style>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
         <script>
@@ -102,6 +102,9 @@
 
 
                     </form>
+                                        Logged in as: <sec:authentication property="principal.username"></sec:authentication> ::
+            <a href='<%= this.getServletContext().getContextPath() + "/j_spring_security_logout"%>'>Log Me Out</a>
+         
                 </div>
             </div>
         </div>

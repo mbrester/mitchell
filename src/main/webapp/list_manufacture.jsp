@@ -24,7 +24,7 @@
             
     </head>
     <body>
-        <h1>Magic Supply List</h1>
+        <h1>Manufacture List</h1>
         <div class="row">
             <div class="box">
                 <div class="col-lg-12">
@@ -53,10 +53,16 @@
         </c:forEach>
         </table>
         <br>
+        
         <form method="POST" action="ManController?action=add">
             <input type="submit" value="add"/>
         </form>
+         
         
+        
+            Logged in as: <sec:authentication property="principal.username"></sec:authentication> ::
+            <a href='<%= this.getServletContext().getContextPath() + "/j_spring_security_logout"%>'>Log Me Out</a>
+          <a href="/AdminService/">Go Back to Main Page</a>
             
         <c:if test="${errMsg != null}">
             <p style="font-weight: bold;color: red;">Sorry, data was unable to be retrieved:<br>

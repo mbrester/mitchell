@@ -17,29 +17,21 @@
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 
-        <title>New Magic Supply</title>
+        <title>New Manufacturer</title>
         <script>
             function validateForm() {
-                var price = document.forms["form"]["productPrice"].value;
-                if (price <= 0 || price === "") {
-                    alert("Price must be filled out and larger than 0");
-                    return false;
-                }
-                var name = document.forms["form"]["productName"].value;
+               
+                var name = document.forms["form"]["manufactureName"].value;
                 if (name === "") {
-                    alert("Product Name Must be filled in.")
+                    alert("Manufacture Name Must be filled in.");
                     return false;
                 }
-                var description = document.forms["form"]["productDescription"].value;
+                var description = document.forms["form"]["manufactureCity"].value;
                 if (description === "") {
-                    alert("Product description Must be filled in.")
+                    alert("Manufacture City Must be filled in.");
                     return false;
                 }
-                var imageUrl = document.forms["form"]["productImageUrl"].value;
-                if (imageUrl === "") {
-                    alert("Product Image Url Must be filled in.")
-                    return false;
-                }
+                
             }
         </script>
         <style>
@@ -70,20 +62,22 @@
                                 <td align="left"><input type="text" value="" name="manufactureName" /></td>
                             </tr>
                             <tr>
-                                <td  align="left">Description:</td>
+                                <td  align="left">City:</td>
                                 <td align="left"><input type="text" value="" name="manufactureCity" /></td>
                             </tr>
                           
 
                             <tr>
                         </table>  <br>
-
+                        
                         <input type="submit" value="Add Manufacture" name="action" /> <a href="ManController?action=list">Back to List of Supplies</a>
-
 
 
                         </p>
                     </form>
+                                Logged in as: <sec:authentication property="principal.username"></sec:authentication> ::
+            <a href='<%= this.getServletContext().getContextPath() + "/j_spring_security_logout"%>'>Log Me Out</a>
+         
                 </div>
             </div>
         </div>
